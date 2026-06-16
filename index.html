@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Kowsika ❤️</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+overflow:hidden;
+height:100vh;
+text-align:center;
+color:white;
+}
+
+.page{
+display:none;
+width:100%;
+height:100vh;
+padding:20px;
+}
+
+.active{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+h1{
+font-size:2.3rem;
+margin-bottom:15px;
+text-shadow:2px 2px 5px rgba(0,0,0,.3);
+}
+
+p{
+font-size:1.1rem;
+max-width:500px;
+}
+
+button{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#ff4081;
+color:white;
+font-size:18px;
+cursor:pointer;
+margin-top:20px;
+}
+
+input{
+padding:12px;
+font-size:18px;
+border:none;
+border-radius:10px;
+text-align:center;
+width:220px;
+}
+
+#gameArea{
+position:relative;
+width:100%;
+height:100vh;
+overflow:hidden;
+background:linear-gradient(#87CEEB,#ffffff);
+}
+
+.cake{
+position:absolute;
+font-size:45px;
+cursor:pointer;
+animation:fall 5s linear forwards;
+}
+
+@keyframes fall{
+from{top:-60px;}
+to{top:100vh;}
+}
+
+#score{
+position:absolute;
+top:10px;
+left:10px;
+font-size:24px;
+font-weight:bold;
+color:#000;
+}
+
+.balloon{
+position:absolute;
+font-size:40px;
+animation:floatUp 8s linear infinite;
+}
+
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-120vh);}
+}
+
+.firework{
+position:absolute;
+font-size:30px;
+animation:boom 1s linear infinite;
+}
+
+@keyframes boom{
+0%{transform:scale(0);}
+100%{transform:scale(2);opacity:0;}
+}
+
+.confetti{
+position:absolute;
+width:10px;
+height:10px;
+animation:confettiFall 4s linear infinite;
+}
+
+@keyframes confettiFall{
+from{
+transform:translateY(-100px) rotate(0deg);
+}
+to{
+transform:translateY(110vh) rotate(720deg);
+}
+}
+
+#sliceCake{
+font-size:150px;
+cursor:pointer;
+transition:1s;
+}
+
+.sliced{
+transform:rotate(-15deg) scale(1.2);
+opacity:0.8;
+}
+
+.final{
+font-size:1.5rem;
+line-height:1.8;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK PAGE -->
+<div id="lockPage" class="page active">
+<h1>🔒 Birthday Surprise</h1>
+<p>Enter the Secret Birthday PIN</p>
+<br>
+<input type="password" id="pin" maxlength="8">
+<button onclick="checkPin()">Unlock</button>
+</div>
+
+<!-- WELCOME -->
+<div id="welcomePage" class="page">
+<h1>🎉 Happy Birthday Kowsika 🎉</h1>
+<p>
+Thank you for being such a great friend. Wishing you endless happiness, success, and beautiful moments in the year ahead. ✨
+</p>
+<button onclick="startGamePage()">Start Game 🎂</button>
+</div>
+
+<!-- GAME -->
+<div id="gamePage" class="page">
+<div id="gameArea">
+<div id="score">Score: 0 / 19</div>
+</div>
+</div>
+
+<!-- CAKE CUT -->
+<div id="cakePage" class="page">
+<h1>🎂 Slice The Birthday Cake 🎂</h1>
+<div id="sliceCake" onclick="sliceCake()">🎂</div>
+<p>Tap the cake to cut it!</p>
+</div>
+
+<!-- FINAL -->
+<div id="finalPage" class="page">
+<h1>🎆 Happy Birthday Kowsika 🎆</h1>
+
+<div class="final">
+💖 May your special day be filled with happiness, laughter, love, and beautiful memories. Wishing you success, good health, and endless joy throughout the year. Happy Birthday Kowsika! ❤️🎂🎉"
+.<br>
+
+<br>
+
+🎂 Happy 19th Birthday 🎂<br><br>
+
+ With Best Wishes <br>
+<strong>From Kishore</strong>
+</div>
+</div>
+
+<script>
+
+let score=0;
+
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>{
+p.classList.remove('active');
+});
+document.getElementById(id).classList.add('active');
+}
+
+function checkPin(){
+let pin=document.getElementById("pin").value;
+
+if(pin==="12072007"){
+showPage("welcomePage");
+createConfetti();
+}else{
+alert("Wrong PIN!");
+}
+}
+
+function startGamePage(){
+showPage("gamePage");
+startGame();
+}
+
+function startGame(){
+
+const game=document.getElementById("gameArea");
+
+let interval=setInterval(()=>{
+
+let cake=document.createElement("div");
+cake.className="cake";
+cake.innerHTML="🎂";
+
+cake.style.left=Math.random()*90+"vw";
+
+cake.onclick=function(){
+
+score++;
+
+document.getElementById("score").innerHTML=
+"Score: "+score+" / 19";
+
+cake.remove();
+
+if(score>=19){
+clearInterval(interval);
+setTimeout(()=>{
+showPage("cakePage");
+},1000);
+}
+};
+
+game.appendChild(cake);
+
+setTimeout(()=>{
+cake.remove();
+},5000);
+
+},600);
+
+}
+
+function sliceCake(){
+
+let cake=document.getElementById("sliceCake");
+
+cake.innerHTML="🍰";
+cake.classList.add("sliced");
+
+createFireworks();
+createBalloons();
+
+setTimeout(()=>{
+showPage("finalPage");
+},4000);
+
+}
+
+function createBalloons(){
+
+for(let i=0;i<20;i++){
+
+let b=document.createElement("div");
+
+b.className="balloon";
+b.innerHTML="🎈";
+
+b.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(b);
+
+}
+
+}
+
+function createFireworks(){
+
+for(let i=0;i<25;i++){
+
+let f=document.createElement("div");
+
+f.className="firework";
+f.innerHTML="✨";
+
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+
+document.body.appendChild(f);
+
+}
+
+}
+
+function createConfetti(){
+
+for(let i=0;i<120;i++){
+
+let c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+
+c.style.background=
+"hsl("+Math.random()*360+",100%,50%)";
+
+c.style.animationDelay=
+Math.random()*4+"s";
+
+document.body.appendChild(c);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
